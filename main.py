@@ -28,3 +28,13 @@ def optimize_slope(support, pivot, init_slope, y):
 
     best_slope = init_slope
     best_err = check_trend_line(support, pivot, init_slope, y)
+
+    get_derivative = True
+    derivative = None
+    while curr_step > min_step:
+        if get_derivative:
+            slope_change = best_slope + slope_unit * min_step
+            test_err = check_trend_line(support, pivot, slope_change, y)
+            derivative = test_err - best_err
+
+            if test_err < 0.0:
