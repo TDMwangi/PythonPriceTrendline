@@ -48,3 +48,12 @@ def optimize_slope(support, pivot, init_slope, y):
             test_slope = best_slope - slope_unit * curr_step
         else:
             test_slope = best_slope + slope_unit * curr_step
+
+        test_err = check_trend_line(support, pivot, test_slope, y)
+
+        if test_err < 0 or test_err >= best_err:
+            curr_step *= 0.5
+        else:
+            best_err = test_err
+            best_slope = test_slope
+            get_derivative = True
