@@ -57,3 +57,14 @@ def optimize_slope(support, pivot, init_slope, y):
             best_err = test_err
             best_slope = test_slope
             get_derivative = True
+
+    return (best_slope, -best_slope * pivot + y[pivot])
+
+
+def fit_trendline(data):
+    x = np.arange(len(data))
+    coefs = np.polyfit(x, data, 1)
+
+    line_points = coefs[0] * x + coefs[1]
+
+    # Find upper and lower pivot points
