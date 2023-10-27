@@ -68,3 +68,11 @@ def fit_trendline(data):
     line_points = coefs[0] * x + coefs[1]
 
     # Find upper and lower pivot points
+    upper_pivot = (data - line_points).argmax()
+    lower_pivot = (data - line_points).argmin()
+
+    # Optimize the slop for both trendlines
+    support_coefs = optimize_slope(True, lower_pivot, coefs[0], data)
+    resist_coefs = optimize_slope(False, upper_pivot, coefs[0], data)
+
+    return (support_coefs, resist_coefs)
