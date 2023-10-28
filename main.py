@@ -76,3 +76,25 @@ def fit_trendline(data):
     resist_coefs = optimize_slope(False, upper_pivot, coefs[0], data)
 
     return (support_coefs, resist_coefs)
+
+
+def high_low(high, low, close):
+    x = np.arange(len(close))
+    coefs = np.polyfit(x, close, 1)
+    line_points = coefs[0] * x + coefs[1]
+
+    upper_pivot = (high - line_points).argmax()
+    lower_pivot = (low - line_points).argmin()
+
+    support_coefs = optimize_slope(True, lower_pivot, coefs[0], low)
+    resist_coefs = optimize_slope(False, upper_pivot, coefs[0], high)
+
+    return (support_coefs, resist_coefs)
+
+
+# Load data
+data = pd.read_csv('bitcoin.csv')
+data['date'] = data['date'].astype('datetime64[s]')
+data = data.set_index('date')
+
+# Resolve price scaling issues
