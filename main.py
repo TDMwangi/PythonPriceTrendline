@@ -98,3 +98,13 @@ data['date'] = data['date'].astype('datetime64[s]')
 data = data.set_index('date')
 
 # Resolve price scaling issues
+data = np.log(data)
+lookback = 30
+
+support_slope = [np.nan] * len(data)
+resist_slope = [np.nan] * len(data)
+
+for i in range(lookback - 1, len(data)):
+    candles = data.iloc[i - lookback + 1: i + 1]
+    support_coefs, resist_coefs = high_low(
+        candles['high'], candles['low'], candles['close'])
