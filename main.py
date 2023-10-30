@@ -108,3 +108,18 @@ for i in range(lookback - 1, len(data)):
     candles = data.iloc[i - lookback + 1: i + 1]
     support_coefs, resist_coefs = high_low(
         candles['high'], candles['low'], candles['close'])
+    support_slope[i] = support_coefs[0]
+    resist_slope[i] = resist_coefs[0]
+
+data['support_slope'] = support_slope
+data['resist_slope'] = resist_slope
+
+plt.style.use('dark_background')
+fig, ax1 = plt.subplots()
+ax2 = ax1.twinx()
+data['close'].plot(ax=ax1)
+data['support_slope'].plot(ax=ax2, label='Support Slope', color='green')
+data['resist_slope'].plot(ax=ax2, label='Resistance Slope', color='red')
+plt.title('Price Trendline')
+plt.legend()
+plt.show()
